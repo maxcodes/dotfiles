@@ -1,0 +1,63 @@
+# Make status background a little darker
+set -g status-bg '#555555'
+
+# remove confirmation when killing pane
+bind-key x kill-pane
+
+# reload the config easily
+bind-key r source-file ~/.tmux.conf \; display-message "~/.tmux.conf reloaded"
+
+# add session name to right side of status bar
+set -g status-right " session:S "
+
+# change split window to more intuitive ones
+bind-key - split-window -v -c "#{pane_current_path}"
+bind-key \ split-window -h -c "#{pane_current_path}"
+
+# Fine adjustment (1 or 2 cursor cells per bump)
+bind -n S-Left resize-pane -L 2
+bind -n S-Right resize-pane -R 2
+bind -n S-Down resize-pane -D 1
+bind -n S-Up resize-pane -U 1
+
+# Coarse adjustment (5 or 10 cursor cells per bump)
+bind -n C-Left resize-pane -L 10
+bind -n C-Right resize-pane -R 10
+bind -n C-Down resize-pane -D 5
+bind -n C-Up resize-pane -U 5
+
+# Smart pane switching with awareness of vim splits
+
+## using vim-tmux-navigator (github christoomey/vim-tmux-navigator)
+is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
+    | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+bind-key -n C-h if-shell "$is_vim" "send-keys C-h"  "select-pane -L"
+bind-key -n C-j if-shell "$is_vim" "send-keys C-j"  "select-pane -D"
+bind-key -n C-k if-shell "$is_vim" "send-keys C-k"  "select-pane -U"
+bind-key -n C-l if-shell "$is_vim" "send-keys C-l"  "select-pane -R"
+bind-key -n C-\ if-shell "$is_vim" "send-keys C-\\" "select-pane -l"
+
+# move current pane to a new window, detached
+bind-key b break-pane -d
+
+# join target pane to current window. Usage: session:window.pane, i.e. 1.1
+bind-key C-j command-prompt -p "join pane from: "  "join-pane -h -s '%%'"
+
+# Easily swap a pane (targeted by pane number) with the current pane
+bind-key s display-panes\; command-prompt -p "pane #: "  "swap-pane -t '%%'"
+
+# Break a pane into a new session
+bind-key C-b send-keys 'tat && exit' 'C-m'
+
+# Move more easily between sessions
+bind-key C-k choose-tree
+
+# Setup 'v' to begin selection as in Vim and 'y' to copy
+bind-key -t vi-copy v begin-selection
+bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
+
+# Update default binding of `Enter` to also use copy-pipe
+unbind -t vi-copy Enter
+bind-key -t vi-copy Enter copy-pipe "reattach-to-user-namespace pbcopy"
+
+set-option -g default-command "reattach-to-user-namespace -l zsh"

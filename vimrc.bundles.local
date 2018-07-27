@@ -1,0 +1,28 @@
+Plug 'mattn/emmet-vim'
+Plug 'othree/html5.vim'
+Plug 'flazz/vim-colorschemes'
+Plug 'tpope/vim-liquid'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'greyblake/vim-preview'
+Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-unimpaired'
+Plug 'tfnico/vim-gradle'
+Plug 'rizzatti/dash.vim'
+Plug 'skwp/greplace.vim'
+Plug 'godlygeek/tabular'
+
+" Custom textobjects
+Plug 'kana/vim-textobj-user'
+Plug 'kana/vim-textobj-entire'
+Plug 'kana/vim-textobj-indent'
+Plug 'kana/vim-textobj-syntax'
+Plug 'kana/vim-textobj-line'
+Plug 'nelstrom/vim-textobj-rubyblock'
+
+" Languages
+Plug 'elixir-lang/vim-elixir'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'cakebaker/scss-syntax.vim'
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }

@@ -1,0 +1,33 @@
+[alias]
+  amend = commit --amend --no-edit
+  br = branch
+  cm = commit -m
+  cp = cherry-pick
+  dic = diff --cached
+  dif = diff
+  lg = log --graph --pretty=format:'%Cred%h%Creset %Cblue(%an)%Creset - %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+  listalias = config --get-regexp alias
+  overview = log --all --since='2 weeks' --oneline --no-merges
+  praise = blame
+  rbc = !git rebase --continue && git status
+  recent = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format="%(refname:short)"
+  rb = rebase
+  rs = reset --hard HEAD
+  stats = shortlog -sn
+  today = log --since=00:00:00 --all --no-merges --oneline --author=maxhm10@gmail.com
+  unstage = reset HEAD
+  wip = commit -am "WIP"
+  unwip = reset --soft HEAD~1
+[user]
+  name = Max Holzheu
+  email = maxhm10@gmail.com
+  signingkey = Max Holzheu <maxhm10@gmail.com>
+[help]
+  autocorrect = 10
+[credential]
+  helper = osxkeychain
+[commit]
+  gpgsign = true
+[core]
+  whitespace = cr-at-eol
+  excludesfile = /Users/max/.gitignore.local

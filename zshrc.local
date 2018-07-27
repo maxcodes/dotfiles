@@ -1,0 +1,58 @@
+[[ -f ~/.zshrc-ohmyzsh ]] && source ~/.zshrc-ohmyzsh
+
+alias vi=vim
+alias c=clear
+alias h="cd ~/Sites/hazel"
+alias n="npm run start"
+alias grep="grep -E"
+alias kd="kubectl -n=deis"
+alias kk="kubectl -n kube-system"
+alias kp="kubectl -n beek-prod"
+alias k="kubectl"
+alias be="bundle exec"
+
+
+source <(kubectl completion zsh)
+source <(kops completion zsh)
+
+# autojump
+[[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
+
+export KOPS_STATE_STORE=s3://k8bs-cosmos-beek-io-state-store
+export ANDROID_HOME=/usr/local/opt/android-sdk
+export SILENCE_RBENV_DEPRECATION=1
+export PATH="$HOME/.bin:$PATH"
+export PATH="/usr/local/Cellar/node/7.4.0/bin:$PATH"
+
+eval "$(rbenv init - --no-rehash)"
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+stty erase "^?"
+
+function deis-run() {
+  export NAMESPACE=$1 && shift
+  export PROCESS="$1" && shift
+  POD=$(kubectl --namespace=$NAMESPACE get pods -o name | grep -m 1 $PROCESS | cut -d '/' -f 2)
+  kubectl exec --namespace=$NAMESPACE -it $POD "$@"
+}
+
+function sqlmap-run() {
+  export SQLMAP_URL=$1 && shift
+  export SQLMAP_DATA="$1" && shift
+
+  cd ~/Sites/hacktools/sqlmap
+  echo "executing python sqlmap.py -u $SQLMAP_URL --data "$SQLMAP_DATA" --random-agent $@"
+  python sqlmap.py -u $SQLMAP_URL \
+  --data "$SQLMAP_DATA" \
+  --random-agent \
+  $@
+}
+
+cd ~/Sites/beek_core
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/max/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/max/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/max/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/max/google-cloud-sdk/completion.zsh.inc'; fi

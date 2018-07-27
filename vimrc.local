@@ -1,0 +1,102 @@
+set relativenumber " set Relative Numbers
+set numberwidth=3 " width of the line number.
+set ignorecase " Ignore case in search
+set vb " Enable visual bell (disable audio)
+set nospell
+
+" Change color scheme
+colorscheme 0x7A69_dark
+highlight Visual ctermbg=17
+
+set list " Display trailing spaces only (no tabs)
+set clipboard=unnamed " Default yank and paste to the osx clipboard
+set scrolloff=1 " Always show at least one line above/below the cursor
+set pastetoggle=<F2>
+set ttimeoutlen=50  " Make Esc work faster
+
+" Resize panes everytime vim is resized (for tmux)
+autocmd VimResized * :wincmd =
+
+" highlight the status bar when in insert mode
+au InsertEnter * hi StatusLine ctermfg=235 ctermbg=2
+au InsertLeave * colorscheme 0x7A69_dark
+
+" common mistypes
+cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q'))
+cnoreabbrev <expr> E ((getcmdtype() is# ':' && getcmdline() is# 'E')?('e'):('E'))
+cnoreabbrev <expr> Wq ((getcmdtype() is# ':' && getcmdline() is# 'Wq')?('wq'):('Wq'))
+cnoreabbrev <expr> Tabe ((getcmdtype() is# ':' && getcmdline() is# 'Tabe')?('tabe'):('Tabe'))
+cnoreabbrev <expr> Grep ((getcmdtype() is# ':' && getcmdline() is# 'Grep')?('grep'):('Grep'))
+
+cnoreabbrev <expr> sudow ((getcmdtype() is# ':' && getcmdline() is# 'w !sudo tee %')?('w !sudo tee %'):('w !sudo tee %'))
+" zoom a vim pane, <leader>= to re-balance
+nnoremap <leader>z :wincmd _<cr>:wincmd \|<cr>
+nnoremap <leader>= :wincmd =<cr>
+inoremap kj <esc>
+noremap <Leader>n :tabe ~/Sites/beek_core/notes.md<CR>
+noremap <Leader>w :tabe ~/Sites/beek_core/worklog.md<CR>
+noremap <Leader>a :call RunAllSpecs()<CR>
+noremap <Leader>vv :tabe ~/.vimrc.local<CR>
+noremap <Leader>vb :tabe ~/.vimrc.bundles.local<CR>
+noremap <Leader>vz :tabe ~/.zshrc.local<CR>
+noremap <Leader>vg :tabe ~/.gitconfig.local<CR>
+noremap <Leader>/ /<C-R>"<CR>
+noremap ,spec irequire "rails_helper"<CR><CR>feature "" do<CR>scenario "" do<CR>end<CR>end<Esc>3kf"
+noremap ,user ouser = create(:user)<Esc>
+noremap ,hc ccexpect(page).to have_content("
+noremap ,- cc<%  %><Esc>3ha
+noremap ,= cc<%=  %><Esc>3ha
+noremap ,pry o<% binding.pry %><Esc>
+vnoremap <Leader>bed "td?describe<CR>obefore(:each) do<CR><ESC>"tpkdd
+vnoremap <Leader>bef "td?feature<CR>obefore(:each) do<CR><ESC>"tpkdd
+vnoremap <Leader>bec "td?context<CR>obefore(:each) do<CR><ESC>"tpkdd
+map <Leader>cs :call SearchForCallSitesCursor()<CR>
+
+" NERDTree Toggle
+map <C-n> :NERDTreeToggle<CR>
+
+" search magic from r00k
+function! SearchForCallSitesCursor()
+  let searchTerm = expand("<cword>")
+  call SearchForCallSites(searchTerm)
+endfunction
+
+" Search for call sites for term (excluding its definition) and
+" load into the quickfix list.
+function! SearchForCallSites(term)
+  cexpr system('ag ' . shellescape(a:term) . '\| grep -v def')
+endfunction
+
+" Platform specific configurations (not working)
+let s:uname = system("uname -s")
+if s:uname == "Darwin\n"
+
+  " Cursor shape configuration
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
+endif
+au BufReadPost *.mobile set syntax=html
+
+" Smart joining of comment lines with J in normal mode
+if v:version > 703 || v:version == 703 && has('patch541')
+  set formatoptions+=j
+endif
+
+" Align stuff with tabularize every time I enter Spacebar in Insert mode
+inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+function! s:align()
+  let p = '^\s*|\s.*\s|\s*$'
+  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+    Tabularize/|/l1
+    normal! 0
+    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+  endif
+endfunction
+
+" Run Prettier on save
+" let g:prettier#autoformat = 0
+" autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md PrettierAsync
+" let g:prettier#config#jsx_bracket_same_line = 'false'
