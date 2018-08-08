@@ -8,3 +8,9 @@ end
 def find_max
   User.find_by_email('max@beek.io') || User.find_by_email("maxhm10@gmail.com")
 end
+
+def catch_exception
+  yield
+rescue => e
+  binding.pry
+end
