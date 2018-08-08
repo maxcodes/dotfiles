@@ -36,10 +36,7 @@ inoremap kj <esc>
 noremap <Leader>n :tabe ~/Sites/beek_core/notes.md<CR>
 noremap <Leader>w :tabe ~/Sites/beek_core/worklog.md<CR>
 noremap <Leader>a :call RunAllSpecs()<CR>
-noremap <Leader>vv :tabe ~/.vimrc.local<CR>
-noremap <Leader>vb :tabe ~/.vimrc.bundles.local<CR>
-noremap <Leader>vz :tabe ~/.zshrc.local<CR>
-noremap <Leader>vg :tabe ~/.gitconfig.local<CR>
+noremap <Leader>v :tabe ~/dotfiles-local<CR>
 noremap <Leader>/ /<C-R>"<CR>
 noremap ,spec irequire "rails_helper"<CR><CR>feature "" do<CR>scenario "" do<CR>end<CR>end<Esc>3kf"
 noremap ,user ouser = create(:user)<Esc>
