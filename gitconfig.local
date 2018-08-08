@@ -8,6 +8,7 @@
   lg = log --graph --pretty=format:'%Cred%h%Creset %Cblue(%an)%Creset - %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
   listalias = config --get-regexp alias
   overview = log --all --since='2 weeks' --oneline --no-merges
+  pr = pull-request
   praise = blame
   rbc = !git rebase --continue && git status
   recent = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format="%(refname:short)"
