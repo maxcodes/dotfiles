@@ -32,7 +32,6 @@ cnoreabbrev <expr> sudow ((getcmdtype() is# ':' && getcmdline() is# 'w !sudo tee
 " zoom a vim pane, <leader>= to re-balance
 nnoremap <leader>z :wincmd _<cr>:wincmd \|<cr>
 nnoremap <leader>= :wincmd =<cr>
-inoremap kj <esc>
 noremap <Leader>n :tabe ~/Sites/beek_core/notes.md<CR>
 noremap <Leader>w :tabe ~/Sites/beek_core/worklog.md<CR>
 noremap <Leader>a :call RunAllSpecs()<CR>
