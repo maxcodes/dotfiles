@@ -1,14 +1,5 @@
 [[ -f ~/.zshrc-ohmyzsh ]] && source ~/.zshrc-ohmyzsh
 
-alias vi=vim
-alias c=clear
-alias h="cd ~/Sites/hazel"
-alias grep="grep -E"
-alias k="kubectl"
-alias be="bundle exec"
-alias s="be rspec"
-
-
 source <(kubectl completion zsh)
 source <(kops completion zsh)
 
