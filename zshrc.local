@@ -3,13 +3,10 @@
 alias vi=vim
 alias c=clear
 alias h="cd ~/Sites/hazel"
-alias n="npm run start"
 alias grep="grep -E"
-alias kd="kubectl -n=deis"
-alias kk="kubectl -n kube-system"
-alias kp="kubectl -n beek-prod"
 alias k="kubectl"
 alias be="bundle exec"
+alias s="be rspec"
 
 
 source <(kubectl completion zsh)
