@@ -1,8 +1,21 @@
+# vim
 alias vi=vim
+
+# Clear screen
 alias c=clear
-alias h="cd ~/Sites/hazel"
+
+# Enable full support for regex in grep
 alias grep="grep -E"
+
+# Kubernetes
 alias k="kubectl"
+alias kubeconsole="kubectl exec -it \$(k get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{\"\\n\"}}{{end}}' | head -1) /bin/bash"
+
+# Rails
 alias be="bundle exec"
 alias s="be rspec"
-alias kubeconsole="kubectl exec -it \$(k get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{\"\\n\"}}{{end}}' | head -1) /bin/bash"
+
+# Beek Specific
+alias deploy-prod='echo "kubectl set image deployment/beekio beekio=gcr.io/aerobic-datum-206523/beekio-image:"'
+alias deploy-worker='echo "kubectl set image deployment/worker worker=gcr.io/aerobic-datum-206523/beekio-image:"'
+alias deploy-staging='echo "kubectl set image deployment/beekio-staging beekio-staging=gcr.io/aerobic-datum-206523/beekio-image:"'
